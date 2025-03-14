@@ -15,9 +15,16 @@ class CalculatorApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         textTheme: const TextTheme(
-          headlineLarge: TextStyle(fontFamily:'sPro', fontSize: 26, color: Colors.white),
-          displayLarge: TextStyle(fontFamily:'sPro', fontSize: 90, color: Colors.white),
+          headlineLarge:
+              TextStyle(fontFamily: 'sPro', fontSize: 26, color: Colors.white),
+          displayLarge:
+              TextStyle(fontFamily: 'sPro', fontSize: 90, color: Colors.white),
         ),
+        colorScheme: const ColorScheme.dark(
+            primary: Color(0xff333333),
+            secondary: Color(0xffF1A33B),
+            tertiary: Colors.grey,
+            surface: Colors.black),
       ),
       home: BlocProvider(
         create: (context) => CalculatorBloc(),

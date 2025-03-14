@@ -5,7 +5,7 @@ class WidebuttonCalc extends StatelessWidget {
   final String text;
   final Color color;
 
-  const WidebuttonCalc(this.text, {super.key, this.color = const Color(0xff333333)});
+  const WidebuttonCalc(this.text, this.color, {super.key});
 
   @override
   Widget build(BuildContext context) {

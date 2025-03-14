@@ -11,7 +11,7 @@ class Display extends StatelessWidget {
       child: Container(
         alignment: Alignment.bottomRight,
         padding:
-            const EdgeInsets.only(right: 25, bottom: 10, top: 10, left: 40),
+            const EdgeInsets.only(right: 50, bottom: 10, top: 10, left: 40),
         child: BlocBuilder<CalculatorBloc, CalculatorState>(
           builder: (context, state) {
             if (state is CalculatorInitial) {

@@ -5,7 +5,7 @@ class ButtonCalc extends StatelessWidget {
   final String text;
   final Color color;
 
-  const ButtonCalc(this.text, {this.color = const Color(0xff333333), super.key});
+  const ButtonCalc(this.text, this.color, {super.key});
 
   @override
   Widget build(BuildContext context) {

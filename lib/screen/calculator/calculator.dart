@@ -9,9 +9,9 @@ class CalculatorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.black,
-      body: Column(
+    return  Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: const Column(
         children: [
           Display(),
           Buttons(),
