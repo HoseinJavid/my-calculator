@@ -1,17 +1,56 @@
+/// A `Bloc` implementation for managing calculator operations and states.
+///
+/// The `CalculatorBloc` handles various calculator events such as number input,
+/// arithmetic operations, clearing the display, changing the sign of a number,
+/// calculating percentages, and adding decimal points. It emits corresponding
+/// states to update the UI based on the user's actions.
+///
+/// ### Events Handled:
+/// - `OnPressNumber`: Appends a number to the current input (left or right operand).
+/// - `OnPressAdd`: Sets the operator to addition.
+/// - `OnPressSubtract`: Sets the operator to subtraction.
+/// - `OnPressMultiply`: Sets the operator to multiplication.
+/// - `OnPressEqual`: Computes the result of the operation.
+/// - `OnPressAllClear`: Resets the calculator to its initial state.
+/// - `OnPressSignChange`: Toggles the sign of the current input (positive/negative).
+/// - `OnPressPercentage`: Converts the current input to a percentage.
+/// - `OnPressDecimalPoint`: Adds a decimal point to the current input.
+///
+/// ### States Emitted:
+/// - `CalcInitial`: The initial state of the calculator.
+/// - `DisplayNumber`: Displays the current number being input.
+/// - `DisplayResult`: Displays the result of a calculation.
+/// - `ErrorState`: Displays an error message in case of an exception.
+///
+/// ### Internal Variables:
+/// - `tmpNumberLeft`: Stores the left operand.
+/// - `tmpNumberRight`: Stores the right operand.
+/// - `tmpOperator`: Stores the selected operator.
+/// - `tmpResult`: Stores the result of the calculation.
+///
+/// ### Error Handling:
+/// If an exception occurs during event handling, the bloc emits an `ErrorState`
+/// with a generic error message.
+///
+/// This bloc is designed to handle basic calculator functionality and ensures
+/// that the UI is updated in response to user interactions.
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-
 part 'calculator_event.dart';
 part 'calculator_state.dart';
 
 class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
   CalculatorBloc() : super(CalcInitial()) {
+    // Temporary variables to store operands, operator, and result
     String? tmpNumberLeft;
     String? tmpNumberRight;
     String? tmpOperator;
     String? tmpResult;
+
+    // Event handler for all calculator events
     on<CalculatorEvent>((event, emit) {
       try {
+        // Handle number input for the left operand
         if (tmpOperator == null) {
           if (event is OnPressNumber) {
             if (tmpNumberLeft == null || tmpNumberLeft!.length < 9) {
@@ -21,6 +60,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
           }
         }
 
+        // Handle number input for the right operand
         if (tmpOperator != null) {
           if (event is OnPressNumber) {
             if (tmpNumberRight == null || tmpNumberRight!.length < 9) {
@@ -29,6 +69,8 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
             }
           }
         }
+
+        // Handle arithmetic operations and set the operator
         if (event is OnPressAdd ||
             event is OnPressSubtract ||
             event is OnPressMultiply ||
@@ -40,6 +82,8 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
           } else if (event is OnPressMultiply) {
             tmpOperator = '*';
           }
+
+          // Perform the calculation if both operands and operator are available
           if (tmpNumberLeft != null &&
               tmpNumberRight != null &&
               tmpOperator != null) {
@@ -73,6 +117,8 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
             }
           }
         }
+
+        // Handle the equal operation to finalize the calculation
         if (event is OnPressEqual) {
           if (tmpNumberLeft != null &&
               tmpNumberRight != null &&
@@ -111,6 +157,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
           }
         }
 
+        // Handle the "All Clear" operation to reset the calculator
         if (event is OnPressAllClear) {
           tmpNumberLeft = null;
           tmpNumberRight = null;
@@ -119,6 +166,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
           emit(CalcInitial());
         }
 
+        // Handle sign change for the current operand
         if (event is OnPressSignChange) {
           if (tmpOperator == null && tmpNumberLeft != null) {
             if (tmpNumberLeft!.startsWith('-')) {
@@ -137,6 +185,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
           }
         }
 
+        // Handle percentage conversion for the current operand
         if (event is OnPressPercentage) {
           if (tmpNumberLeft != null) {
             tmpNumberLeft = (double.parse(tmpNumberLeft!) / 100).toString();
@@ -148,6 +197,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
           }
         }
 
+        // Handle adding a decimal point to the current operand
         if (event is OnPressDecimalPoint) {
           if (tmpNumberLeft != null && tmpOperator == null) {
             tmpNumberLeft = '${tmpNumberLeft!}.';
@@ -159,6 +209,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
           }
         }
       } catch (e) {
+        // Emit an error state in case of an exception
         emit(const ErrorState('error'));
       }
     });
