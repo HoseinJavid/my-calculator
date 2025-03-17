@@ -9,7 +9,7 @@ class CalculatorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: const Column(
         children: [
@@ -28,37 +28,33 @@ void handleButtonPress(String text, BuildContext context) {
   final bloc = context.read<CalculatorBloc>();
   switch (text) {
     case 'AC':
-      //bloc sent event
+      bloc.add(OnPressAllClear());
       break;
     case '±':
-      //bloc sent event
-
+      bloc.add(OnPressSignChange());
       break;
     case '%':
-      //bloc sent event
-
+      bloc.add(OnPressPercentage());
       break;
     case '=':
-      //bloc sent event
-
+      bloc.add(OnPressEqual());
       break;
     case '.':
-      //bloc sent event
-
+      bloc.add(OnPressDecimalPoint());
       break;
     case '+':
-    //bloc sent event
-
+      bloc.add(OnPressAdd());
+      break;
     case '-':
-    //bloc sent event
-
+      bloc.add(OnPressSubtract());
+      break;
     case '×':
-    //bloc sent event
-
+      bloc.add(OnPressMultiply());
+      break;
     case '÷':
-      //bloc sent event
+      bloc.add(OnPressDivide());
       break;
     default:
-    //bloc sent event
+      bloc.add(OnPressNumber(text));
   }
 }
