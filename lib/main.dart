@@ -21,6 +21,18 @@ class CalculatorApp extends StatelessWidget {
           displayLarge:
               TextStyle(fontFamily: 'sPro', fontSize: 90, color: Colors.white),
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return Colors.white.withOpacity(0.3); // Change on press color
+                }
+                return null; // Default color
+              },
+            ),
+          ),
+        ),
         colorScheme: const ColorScheme.dark(
             primary: Color(0xff333333),
             secondary: Color(0xffF1A33B),
