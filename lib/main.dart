@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ios_calculator/screen/calculator/bloc/calculator_bloc.dart';
 import 'package:ios_calculator/screen/calculator/calculator.dart';
+import 'package:ios_calculator/screen/splash/splash.dart';
 
 void main() => runApp(const CalculatorApp());
 
@@ -26,10 +27,7 @@ class CalculatorApp extends StatelessWidget {
             tertiary: Colors.grey,
             surface: Colors.black),
       ),
-      home: BlocProvider(
-        create: (context) => CalculatorBloc(),
-        child: const CalculatorScreen(),
-      ),
+      home: const SplashScreen(),
     );
   }
 }
