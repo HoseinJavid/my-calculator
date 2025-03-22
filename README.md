@@ -15,7 +15,7 @@ The Calculator is a state management solution built using the BLoC pattern to ha
 
 ## Preview
 
-![demo](https://github.com/HoseinJavid/my-calculator/tree/main/demo/demo.gif)
+![demo](https://github.com/HoseinJavid/my-calculator/blob/main/demo/demo.gif)
 
 
 
