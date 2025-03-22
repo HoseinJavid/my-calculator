@@ -9,9 +9,11 @@ class WidebuttonCalc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return SizedBox(
-      height: 190,
-      width: 95,
+      width: MediaQuery.of(context).size.width / 4,
+      height: (screenHeight *0.6 / 5) * 2,
       child: Padding(
         padding: const EdgeInsets.all(6.0),
         child: ElevatedButton(
@@ -20,15 +22,9 @@ class WidebuttonCalc extends StatelessWidget {
             shape: const StadiumBorder(),
           ),
           onPressed: () => handleButtonPress(text, context),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                text,
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-            ),
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.headlineLarge,
           ),
         ),
       ),

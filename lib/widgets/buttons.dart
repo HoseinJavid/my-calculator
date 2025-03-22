@@ -25,7 +25,7 @@ class Buttons extends StatelessWidget {
         ),
         Column(
           children: [
-            ButtonCalc('±', singleOperatorColor),
+            ButtonCalc('÷', operatorColor),
             ButtonCalc('8', numberColor),
             ButtonCalc('5', numberColor),
             ButtonCalc('2', numberColor),
@@ -43,7 +43,11 @@ class Buttons extends StatelessWidget {
         ),
         Column(
           children: [
-            ButtonCalc('×', operatorColor),
+            ButtonCalc(
+              '×',
+              operatorColor,
+              width: MediaQuery.of(context).size.width / 4,
+            ),
             WidebuttonCalc('+', operatorColor),
             WidebuttonCalc('=', operatorColor),
           ],

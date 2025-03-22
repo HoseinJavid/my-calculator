@@ -74,6 +74,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
         if (event is OnPressAdd ||
             event is OnPressSubtract ||
             event is OnPressMultiply ||
+            event is OnPressDivide ||
             event is OnPressEqual) {
           if (event is OnPressAdd) {
             tmpOperator = '+';
@@ -81,6 +82,8 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
             tmpOperator = '-';
           } else if (event is OnPressMultiply) {
             tmpOperator = '*';
+          } else if (event is OnPressDivide) {
+            tmpOperator = '÷';
           }
 
           // Perform the calculation if both operands and operator are available
@@ -114,10 +117,22 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
               tmpNumberLeft = tmpResult;
               tmpNumberRight = null;
               emit(DisplayResult(tmpResult!));
+            } else if (tmpOperator == '÷') {
+              if (tmpNumberRight == '0') {
+                emit(const ErrorState('Cannot divide by zero'));
+              } else {
+                double result = double.parse(tmpNumberLeft!) /
+                    double.parse(tmpNumberRight!);
+                tmpResult = result % 1 == 0
+                    ? result.toInt().toString()
+                    : result.toString();
+                tmpNumberLeft = tmpResult;
+                tmpNumberRight = null;
+                emit(DisplayResult(tmpResult!));
+              }
             }
           }
         }
-
         // Handle the equal operation to finalize the calculation
         if (event is OnPressEqual) {
           if (tmpNumberLeft != null &&
@@ -153,6 +168,20 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
               tmpNumberRight = null;
               tmpOperator = null;
               emit(DisplayResult(tmpResult!));
+            } else if (tmpOperator == '÷') {
+              if (tmpNumberRight == '0') {
+                emit(const ErrorState('error'));
+              } else {
+                double result = double.parse(tmpNumberLeft!) /
+                    double.parse(tmpNumberRight!);
+                tmpResult = result % 1 == 0
+                    ? result.toInt().toString()
+                    : result.toString();
+                tmpNumberLeft = null;
+                tmpNumberRight = null;
+                tmpOperator = null;
+                emit(DisplayResult(tmpResult!));
+              }
             }
           }
         }
@@ -174,25 +203,34 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
             } else {
               tmpNumberLeft = '-$tmpNumberLeft';
             }
-            emit(DisplayNumber(tmpNumberLeft!));
+            if (tmpNumberLeft != null) {
+              emit(DisplayNumber(tmpNumberLeft!));
+            }
           } else if (tmpOperator != null && tmpNumberRight != null) {
             if (tmpNumberRight!.startsWith('-')) {
               tmpNumberRight = tmpNumberRight!.substring(1);
             } else {
               tmpNumberRight = '-$tmpNumberRight';
             }
-            emit(DisplayNumber(tmpNumberRight!));
+            if (tmpNumberRight != null) {
+              emit(DisplayNumber(tmpNumberRight!));
+            }
           }
         }
 
         // Handle percentage conversion for the current operand
         if (event is OnPressPercentage) {
-          if (tmpNumberLeft != null) {
-            tmpNumberLeft = (double.parse(tmpNumberLeft!) / 100).toString();
+          if (tmpOperator == null && tmpNumberLeft != null) {
+            double percentage = double.parse(tmpNumberLeft!) / 100;
+            tmpNumberLeft = percentage % 1 == 0
+                ? percentage.toInt().toString()
+                : percentage.toString();
             emit(DisplayNumber(tmpNumberLeft!));
-          }
-          if (tmpNumberRight != null) {
-            tmpNumberRight = (double.parse(tmpNumberRight!) / 100).toString();
+          } else if (tmpOperator != null && tmpNumberRight != null) {
+            double percentage = double.parse(tmpNumberRight!) / 100;
+            tmpNumberRight = percentage % 1 == 0
+                ? percentage.toInt().toString()
+                : percentage.toString();
             emit(DisplayNumber(tmpNumberRight!));
           }
         }
@@ -200,12 +238,16 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
         // Handle adding a decimal point to the current operand
         if (event is OnPressDecimalPoint) {
           if (tmpNumberLeft != null && tmpOperator == null) {
-            tmpNumberLeft = '${tmpNumberLeft!}.';
-            emit(DisplayNumber(tmpNumberLeft!));
+            if (!tmpNumberLeft!.contains('.')) {
+              tmpNumberLeft = '${tmpNumberLeft!}.';
+              emit(DisplayNumber(tmpNumberLeft!));
+            }
           }
-          if (tmpNumberRight != null && tmpOperator != null) {
-            tmpNumberRight = '${tmpNumberRight!}.';
-            emit(DisplayNumber(tmpNumberRight!));
+          if (tmpNumberRight != null) {
+            if (!tmpNumberRight!.contains('.')) {
+              tmpNumberRight = '${tmpNumberRight!}.';
+              emit(DisplayNumber(tmpNumberRight!));
+            }
           }
         }
       } catch (e) {

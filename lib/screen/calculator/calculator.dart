@@ -15,9 +15,7 @@ class CalculatorScreen extends StatelessWidget {
         children: [
           Display(),
           Buttons(),
-          SizedBox(
-            height: 30,
-          )
+          SizedBox(height: 8,)
         ],
       ),
     );
